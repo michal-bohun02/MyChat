@@ -10,6 +10,8 @@ class PromptRequest(BaseModel):
     prompt: str
 @ollama_router.post("/get_response", tags=["ollama"], summary="Get response from Ollama")
 async def get_response(prompt:PromptRequest):
-    messages = [{"role": "user", "content": prompt.prompt}]
+    messages = [
+        {'role': 'system', 'content': 'Jesteś pomocnym asystentem. Odpowiadaj zawsze po polsku.'},
+        {"role": "user", "content": prompt.prompt}]
     stream = await send_prompt(messages)
     return await get_answer(stream,messages)
